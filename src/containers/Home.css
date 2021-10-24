@@ -1,0 +1,27 @@
+.fullScreenError {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.loginButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+}
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.endOfContacts {
+    margin: 20px;
+    align-self: flex-end;
+    text-align: center;
+}
+.spinnerClass {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
