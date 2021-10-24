@@ -5,6 +5,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
 import User from '../components/User';
 import * as constants from '../constants/index';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 import './Home.css';
 
@@ -16,7 +18,6 @@ const Home = (props) => {
     const [pageNumber, setPageNumber] = useState(constants.initialPageForRandomUsersURL);
     const [users, setUsers] = useState([]);
     const [lastElement, setLastElement] = useState(null);
-    const [fullScreenLoading, setFullScreenLoading] = useState(true);
     const [logoutButtonLoading, setLogoutButtonLoading] = useState(false);
 
     const history = useHistory();
@@ -31,12 +32,18 @@ const Home = (props) => {
     );
 
     useEffect(() => {
-        setFullScreenLoading(false);
-    }, []);
-
-    useEffect(() => {
-        if (pageNumber <= constants.maxPageForRandomUsersURL) {
+        if (pageNumber <= constants.maxPageForRandomUsersURL && isUserAuthenticated) {
             setLoading(true);
+            axios.get(
+                `${constants.randomUsersURL}?page=${pageNumber}&results=${constants.maxNumberOfUsersToFetchPerPage}`
+            ).then((resp) => {
+                setUsers([...new Set([...users, ...resp.data.results])]);
+                setLoading(false);
+                setError(false);
+            }, (err) => {
+                console.log('err: ', err)
+                setError(true);
+            });
         }
     }, [pageNumber]);
 
@@ -72,9 +79,6 @@ const Home = (props) => {
                 </Button>
             </div>
         );
-    }
-
-    if (fullScreenLoading) {
     }
 
     if (error) {
